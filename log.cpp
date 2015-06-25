@@ -1,8 +1,8 @@
-#include"Log.h"
+ï»¿#include"Log.h"
 void logger::operator<<(const string &str)
-{	//Îòêðûâàåì è äîïèñûâàåì â ôàéë
+{	//ÐžÑ‚ÐºÑ€Ñ‹Ð²Ð°ÐµÐ¼ Ð¸ Ð´Ð¾Ð¿Ð¸ÑÑ‹Ð²Ð°ÐµÐ¼ Ð² Ñ„Ð°Ð¹Ð»
 	fstream fs("log.txt", ios::out | ios::app);
-	//Âðåìÿ
+	//Ð’Ñ€ÐµÐ¼Ñ
 	struct tm time_info;
 	time_t time_create = time(NULL);
 	errno_t err;

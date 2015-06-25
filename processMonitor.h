@@ -1,4 +1,4 @@
-#pragma once
+п»ї#pragma once
 #include <Windows.h>
 #include <iostream>
 #include <vector>
@@ -12,28 +12,28 @@ public:
 	MonitorProcess(LPCTSTR AppName, LPTSTR ComLine, LPSECURITY_ATTRIBUTES ProcAt = NULL, LPSECURITY_ATTRIBUTES ThreadAt = NULL,
 		BOOL InherH = FALSE, DWORD CreaF = 0, LPVOID Envo = NULL, LPCTSTR Directory = NULL);
 	~MonitorProcess();
-	void Monitor_already_running_process();//Ищет по id запущенный процесс и сообщает информацию 
-	void Create_process();//Создает процесс
-	void Process_info();//Сообщает информацию о созданном процессе
-	void Close_process();//Закрывает процесс
-	void Is_process_injob();//Проверяет, не закрылся ли процесс
-	void Restart_process(void(*)());//Запускает методы Close_process и Create_process
-	void ManuallyStop(void(*)());//Запускает метод Close_process
-	static unsigned WINAPI DoWork(void*);//Ждет, пока созданный	 процесс не закроется сам
-	void Launch_process(void(*)()); //Запускает методы Create_process и Is_process_injob
+	void Monitor_already_running_process();//РС‰РµС‚ РїРѕ id Р·Р°РїСѓС‰РµРЅРЅС‹Р№ РїСЂРѕС†РµСЃСЃ Рё СЃРѕРѕР±С‰Р°РµС‚ РёРЅС„РѕСЂРјР°С†РёСЋ 
+	void Create_process();//РЎРѕР·РґР°РµС‚ РїСЂРѕС†РµСЃСЃ
+	void Process_info();//РЎРѕРѕР±С‰Р°РµС‚ РёРЅС„РѕСЂРјР°С†РёСЋ Рѕ СЃРѕР·РґР°РЅРЅРѕРј РїСЂРѕС†РµСЃСЃРµ
+	void Close_process();//Р—Р°РєСЂС‹РІР°РµС‚ РїСЂРѕС†РµСЃСЃ
+	void Is_process_injob();//РџСЂРѕРІРµСЂСЏРµС‚, РЅРµ Р·Р°РєСЂС‹Р»СЃСЏ Р»Рё РїСЂРѕС†РµСЃСЃ
+	void Restart_process(void(*)());//Р—Р°РїСѓСЃРєР°РµС‚ РјРµС‚РѕРґС‹ Close_process Рё Create_process
+	void ManuallyStop(void(*)());//Р—Р°РїСѓСЃРєР°РµС‚ РјРµС‚РѕРґ Close_process
+	static unsigned WINAPI DoWork(void*);//Р–РґРµС‚, РїРѕРєР° СЃРѕР·РґР°РЅРЅС‹Р№	 РїСЂРѕС†РµСЃСЃ РЅРµ Р·Р°РєСЂРѕРµС‚СЃСЏ СЃР°Рј
+	void Launch_process(void(*)()); //Р—Р°РїСѓСЃРєР°РµС‚ РјРµС‚РѕРґС‹ Create_process Рё Is_process_injob
 	static int NumofCreatedProcesses;
 private:
 	logger log;
 	state processState;
 	STARTUPINFO si;
 	PROCESS_INFORMATION pi;
-	//Параметры функции CreateProcess
-	LPCTSTR lpApplicationName;                 // имя исполняемого модуля
-	LPTSTR lpCommandLine;                      // Командная строка
-	LPSECURITY_ATTRIBUTES lpProcessAttributes; // Указатель на структуру SECURITY_ATTRIBUTES
-	LPSECURITY_ATTRIBUTES lpThreadAttributes;  // Указатель на структуру SECURITY_ATTRIBUTES
-	BOOL bInheritHandles;                      // Флаг наследования текущего процесса
-	DWORD dwCreationFlags;                     // Флаги способов создания процесса
-	LPVOID lpEnvironment;                      // Указатель на блок среды
-	LPCTSTR lpCurrentDirectory;                // Текущий диск или каталог
+	//РџР°СЂР°РјРµС‚СЂС‹ С„СѓРЅРєС†РёРё CreateProcess
+	LPCTSTR lpApplicationName;                 // РёРјСЏ РёСЃРїРѕР»РЅСЏРµРјРѕРіРѕ РјРѕРґСѓР»СЏ
+	LPTSTR lpCommandLine;                      // РљРѕРјР°РЅРґРЅР°СЏ СЃС‚СЂРѕРєР°
+	LPSECURITY_ATTRIBUTES lpProcessAttributes; // РЈРєР°Р·Р°С‚РµР»СЊ РЅР° СЃС‚СЂСѓРєС‚СѓСЂСѓ SECURITY_ATTRIBUTES
+	LPSECURITY_ATTRIBUTES lpThreadAttributes;  // РЈРєР°Р·Р°С‚РµР»СЊ РЅР° СЃС‚СЂСѓРєС‚СѓСЂСѓ SECURITY_ATTRIBUTES
+	BOOL bInheritHandles;                      // Р¤Р»Р°Рі РЅР°СЃР»РµРґРѕРІР°РЅРёСЏ С‚РµРєСѓС‰РµРіРѕ РїСЂРѕС†РµСЃСЃР°
+	DWORD dwCreationFlags;                     // Р¤Р»Р°РіРё СЃРїРѕСЃРѕР±РѕРІ СЃРѕР·РґР°РЅРёСЏ РїСЂРѕС†РµСЃСЃР°
+	LPVOID lpEnvironment;                      // РЈРєР°Р·Р°С‚РµР»СЊ РЅР° Р±Р»РѕРє СЃСЂРµРґС‹
+	LPCTSTR lpCurrentDirectory;                // РўРµРєСѓС‰РёР№ РґРёСЃРє РёР»Рё РєР°С‚Р°Р»РѕРі
 };

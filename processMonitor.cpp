@@ -1,7 +1,7 @@
-#include "processMonitor.h"
+п»ї#include "processMonitor.h"
 using namespace std;
-vector<HANDLE> Num;//Количество дескрипторов созданных процессов
-int MonitorProcess::NumofCreatedProcesses = 0;//Количество созданных процессов
+vector<HANDLE> Num;//РљРѕР»РёС‡РµСЃС‚РІРѕ РґРµСЃРєСЂРёРїС‚РѕСЂРѕРІ СЃРѕР·РґР°РЅРЅС‹С… РїСЂРѕС†РµСЃСЃРѕРІ
+int MonitorProcess::NumofCreatedProcesses = 0;//РљРѕР»РёС‡РµСЃС‚РІРѕ СЃРѕР·РґР°РЅРЅС‹С… РїСЂРѕС†РµСЃСЃРѕРІ
 MonitorProcess::MonitorProcess(LPCTSTR AppName, LPTSTR ComLine,
 	LPSECURITY_ATTRIBUTES ProcAt, LPSECURITY_ATTRIBUTES ThreadAt,
 	BOOL InherH, DWORD CreaF, LPVOID Envo, LPCTSTR Directory)
@@ -17,7 +17,7 @@ MonitorProcess::MonitorProcess(LPCTSTR AppName, LPTSTR ComLine,
 }
 MonitorProcess::~MonitorProcess()
 {
-	//Закрываем все открытые дескрипторы
+	//Р—Р°РєСЂС‹РІР°РµРј РІСЃРµ РѕС‚РєСЂС‹С‚С‹Рµ РґРµСЃРєСЂРёРїС‚РѕСЂС‹
 	if (NumofCreatedProcesses > 0)
 	{
 		for (int i=0; i < NumofCreatedProcesses; i++)
@@ -38,9 +38,9 @@ void MonitorProcess::Create_process()
 		&si, &pi))
 	{
 		NumofCreatedProcesses += 1;
-		Num.push_back(pi.hProcess);//Помещаем дескриптор в контейнер
-		CloseHandle(pi.hThread);   //Закрываем поток
-			processState = on;     //Включаем условие перезагрузки
+		Num.push_back(pi.hProcess);//РџРѕРјРµС‰Р°РµРј РґРµСЃРєСЂРёРїС‚РѕСЂ РІ РєРѕРЅС‚РµР№РЅРµСЂ
+		CloseHandle(pi.hThread);   //Р—Р°РєСЂС‹РІР°РµРј РїРѕС‚РѕРє
+			processState = on;     //Р’РєР»СЋС‡Р°РµРј СѓСЃР»РѕРІРёРµ РїРµСЂРµР·Р°РіСЂСѓР·РєРё
 	}
 	else
 	{
@@ -53,26 +53,26 @@ void MonitorProcess::Close_process()
 {
 	if (NumofCreatedProcesses > 0)
 	{
-		processState = off; //Выключаем условие перезагрузки
+		processState = off; //Р’С‹РєР»СЋС‡Р°РµРј СѓСЃР»РѕРІРёРµ РїРµСЂРµР·Р°РіСЂСѓР·РєРё
 		DWORD d;
 		HANDLE h = Num[NumofCreatedProcesses - 1];
 		int out = GetExitCodeProcess(h, &d);
 		TerminateProcess(h, out);
-		//Ждем закрытия обьекта, так как функция TerminateProcess возвращает значение еще до закрытия процесса
+		//Р–РґРµРј Р·Р°РєСЂС‹С‚РёСЏ РѕР±СЊРµРєС‚Р°, С‚Р°Рє РєР°Рє С„СѓРЅРєС†РёСЏ TerminateProcess РІРѕР·РІСЂР°С‰Р°РµС‚ Р·РЅР°С‡РµРЅРёРµ РµС‰Рµ РґРѕ Р·Р°РєСЂС‹С‚РёСЏ РїСЂРѕС†РµСЃСЃР°
 		WaitForSingleObject(h, INFINITE);
-		CloseHandle(h);//Закрываем дескриптор процесса
+		CloseHandle(h);//Р—Р°РєСЂС‹РІР°РµРј РґРµСЃРєСЂРёРїС‚РѕСЂ РїСЂРѕС†РµСЃСЃР°
 		Num.pop_back();
 		cout << "Closing process";
 		log << "Process closed";
 		NumofCreatedProcesses -= 1;
-		processState = on; //Включаем обратно
+		processState = on; //Р’РєР»СЋС‡Р°РµРј РѕР±СЂР°С‚РЅРѕ
 	}
 }
 void MonitorProcess::Process_info()
 {
 	if (NumofCreatedProcesses > 0)
 	{
-		//получаем HANDLE процесса (открываем процесс)
+		//РїРѕР»СѓС‡Р°РµРј HANDLE РїСЂРѕС†РµСЃСЃР° (РѕС‚РєСЂС‹РІР°РµРј РїСЂРѕС†РµСЃСЃ)
 		HANDLE hCur = OpenProcess(PROCESS_ALL_ACCESS | PROCESS_QUERY_INFORMATION,
 			true, pi.dwProcessId);
 		DWORD i, code, sh, sh1, id;
@@ -81,27 +81,27 @@ void MonitorProcess::Process_info()
 		char name[MAX_PATH];
 		cout << "\nInfo about current process\n";
 		log << "\nInfo about current process\n";
-		//Текущий каталог
+		//РўРµРєСѓС‰РёР№ РєР°С‚Р°Р»РѕРі
 		i = GetCurrentDirectory(100, buf);
 		cout << "Current Directory  ->" << buf;
 		log << "Current Directory  ->";
 		log << buf;
-		//Командная строка
+		//РљРѕРјР°РЅРґРЅР°СЏ СЃС‚СЂРѕРєР°
 		GetModuleFileNameEx(hCur, NULL, name, MAX_PATH);
 		cout << "\nModule filename is : " << name;
 		log << "\nModule filename is : ";
 		log << name;
-		//Id процесса
+		//Id РїСЂРѕС†РµСЃСЃР°
 		id = GetProcessId(pi.hProcess);
 		cout << "\nProcess id     ->" << id;
 		log << "\nProcess id     ->";
 		log << id;
-		//Код статуса завершения
+		//РљРѕРґ СЃС‚Р°С‚СѓСЃР° Р·Р°РІРµСЂС€РµРЅРёСЏ
 		k = GetExitCodeProcess(hCur, &code);
 		cout << "\nExitCode Process   ->" << code;
 		log << "\nExitCode Process   ->";
 		log << code;
-		//Параметры перезагрузки
+		//РџР°СЂР°РјРµС‚СЂС‹ РїРµСЂРµР·Р°РіСЂСѓР·РєРё
 		k = GetProcessShutdownParameters(&sh, &sh1);
 		if (k == 1)
 			i = GetProcessVersion(GetCurrentProcessId());
@@ -112,7 +112,7 @@ void MonitorProcess::Process_info()
  }
 void MonitorProcess::Is_process_injob()
 {
-	//Создаем новый поток для мониторинга состояния процесса
+	//РЎРѕР·РґР°РµРј РЅРѕРІС‹Р№ РїРѕС‚РѕРє РґР»СЏ РјРѕРЅРёС‚РѕСЂРёРЅРіР° СЃРѕСЃС‚РѕСЏРЅРёСЏ РїСЂРѕС†РµСЃСЃР°
 	unsigned int dwThreadID;
 	 _beginthreadex(NULL, 0,DoWork, this, 0, &dwThreadID);
 }
@@ -122,14 +122,14 @@ void MonitorProcess::Monitor_already_running_process()
 	DWORD processID, aProcesses[1024], cbNeeded, cProcesses;
 	HANDLE processHandle;
 	cin >> processID;
-	//Получаем список процессов
+	//РџРѕР»СѓС‡Р°РµРј СЃРїРёСЃРѕРє РїСЂРѕС†РµСЃСЃРѕРІ
 	if (!EnumProcesses(aProcesses, sizeof(aProcesses), &cbNeeded))
 	{
 		cout << "\nCan`t take the process list";
 	}
-	// Вычислим сколько id процессов получено
+	// Р’С‹С‡РёСЃР»РёРј СЃРєРѕР»СЊРєРѕ id РїСЂРѕС†РµСЃСЃРѕРІ РїРѕР»СѓС‡РµРЅРѕ
 	cProcesses = cbNeeded / sizeof(DWORD);
-	//Проверим введенный id
+	//РџСЂРѕРІРµСЂРёРј РІРІРµРґРµРЅРЅС‹Р№ id
 	enum process{no,yes};
 	process isProcess = no;
 	for (DWORD i = 0; i < cProcesses; i++)
@@ -141,10 +141,10 @@ void MonitorProcess::Monitor_already_running_process()
 	}
 	if (isProcess == yes)
 	{
-		//Получаем дескриптор процесса по id
+		//РџРѕР»СѓС‡Р°РµРј РґРµСЃРєСЂРёРїС‚РѕСЂ РїСЂРѕС†РµСЃСЃР° РїРѕ id
 		processHandle = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_VM_READ, FALSE, processID);
 		char name[MAX_PATH];
-		//Командная строка
+		//РљРѕРјР°РЅРґРЅР°СЏ СЃС‚СЂРѕРєР°
 		if (GetModuleFileNameEx(processHandle,NULL,name,MAX_PATH))
 		{
 			cout << "\nModule filename is : " << name;
@@ -165,8 +165,8 @@ unsigned MonitorProcess::DoWork(void* caller)
 	WaitForSingleObject(Num[NumofCreatedProcesses-1], INFINITE);
 	if (self->processState == on & NumofCreatedProcesses>0)
 	{
-		CloseHandle(Num[NumofCreatedProcesses - 1]);//Закрываем дескриптор закрытого процесса
-		Num.pop_back(); //удаляем дескриптор закрытого процесса
+		CloseHandle(Num[NumofCreatedProcesses - 1]);//Р—Р°РєСЂС‹РІР°РµРј РґРµСЃРєСЂРёРїС‚РѕСЂ Р·Р°РєСЂС‹С‚РѕРіРѕ РїСЂРѕС†РµСЃСЃР°
+		Num.pop_back(); //СѓРґР°Р»СЏРµРј РґРµСЃРєСЂРёРїС‚РѕСЂ Р·Р°РєСЂС‹С‚РѕРіРѕ РїСЂРѕС†РµСЃСЃР°
 		NumofCreatedProcesses -=1;
 		self->Create_process();
 		self->Is_process_injob();
@@ -177,7 +177,7 @@ void MonitorProcess::Launch_process(void(*fu)())
 {
 	Create_process();
 	Is_process_injob();
-	fu(); //Вызываем Callback
+	fu(); //Р’С‹Р·С‹РІР°РµРј Callback
 }
 void MonitorProcess::Restart_process(void(*fu)())
 {
